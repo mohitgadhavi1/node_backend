@@ -1,6 +1,7 @@
 import { Button, Form, Input, Popconfirm, Table, Select } from "antd";
 import "./App.css";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { ration } from "./server";
 
 const EditableContext = React.createContext(null);
 
@@ -206,9 +207,10 @@ const App = () => {
   });
 
   return (
-    <div>
+    <div style={{ width: 150 }}>
       <Button
         onClick={handleAdd}
+        // onClick={() => ration("get")}
         type="primary"
         style={{
           marginBottom: 16,
