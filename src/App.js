@@ -1,7 +1,8 @@
 import { Button, Form, Input, Popconfirm, Table, Select } from "antd";
 import "./App.css";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { ration } from "./server";
+import { useSelector } from "react-redux";
+import { useRation } from "./queries";
 
 const EditableContext = React.createContext(null);
 
@@ -104,33 +105,34 @@ const EditableCell = ({
 };
 
 const App = () => {
+  const counter = useSelector((state) => state.counter);
+  const ration = useRation("get");
+  console.log("ration", ration);
   const [dataSource, setDataSource] = useState([]);
   const [count, setCount] = useState(0);
-
-  console.log(dataSource);
 
   const defaultColumns = [
     {
       title: "Packet Id",
-      dataIndex: "packet_id",
+      dataIndex: "_id",
       width: "5%",
       editable: true,
     },
     {
       title: "Packet Type",
-      dataIndex: "packet_type",
+      dataIndex: "packetType",
       editable: true,
       width: "10%",
     },
     {
       title: "Packet Content",
-      dataIndex: "packet_content",
+      dataIndex: "packetContent",
       // width: "30%",
       editable: true,
     },
     {
       title: "Calories",
-      dataIndex: "calories",
+      dataIndex: "qty",
       width: "10%",
       editable: true,
     },
@@ -207,24 +209,26 @@ const App = () => {
   });
 
   return (
-    <div style={{ width: 150 }}>
-      <Button
-        onClick={handleAdd}
-        // onClick={() => ration("get")}
-        type="primary"
-        style={{
-          marginBottom: 16,
-        }}
-      >
-        Add a row
-      </Button>
-      <Table
-        components={components}
-        rowClassName={() => "editable-row"}
-        bordered
-        dataSource={dataSource}
-        columns={columns}
-      />
+    <div className="flex items-center border justify-center w-full h-screen">
+      <div>
+        <Button
+          onClick={handleAdd}
+          // onClick={() => ration("get")}
+          type="primary"
+          style={{
+            marginBottom: 16,
+          }}
+        >
+          Add a row
+        </Button>
+        <Table
+          components={components}
+          rowClassName={() => "editable-row"}
+          bordered
+          dataSource={ration.data}
+          columns={columns}
+        />
+      </div>
     </div>
   );
 };
